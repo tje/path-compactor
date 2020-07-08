@@ -65,6 +65,10 @@ fn compact_path(path: PathBuf) -> String {
         }
         first = true;
 
+        if frag == &"/" {
+            continue;
+        }
+
         // Just print the full fragment if it's already short
         if frag.len() <= 4 {
             output.push_str(frag);
