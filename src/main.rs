@@ -1,4 +1,3 @@
-use std::fs;
 use std::env;
 use std::path::{Path, PathBuf};
 use regex::Regex;
@@ -17,8 +16,10 @@ fn main() -> std::io::Result<()> {
 fn get_cwd() -> std::io::Result<PathBuf> {
     let argv: Vec<String> = env::args().collect();
     let path = match argv.get(1) {
-        Some(p) => fs::canonicalize(PathBuf::from(p))
-            .or(Ok(PathBuf::from(p))),
+        Some(p) => {
+            let pb = PathBuf::from(p);
+            pb.canonicalize().or(Ok(pb))
+        },
         _ => env::current_dir(),
     };
     path
