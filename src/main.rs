@@ -1,5 +1,5 @@
 use std::env;
-use std::path::{Path, PathBuf};
+use std::path::{Path, PathBuf, MAIN_SEPARATOR};
 use regex::Regex;
 
 extern crate dirs;
@@ -43,7 +43,8 @@ fn compact_path(path: PathBuf) -> String {
     // If the path includes the home directory, strip it out and print "~"
     let np = match path.strip_prefix(format!("{}", home.display())) {
         Ok(p) => {
-            output.push_str(&"~/");
+            output.push_str(&"~");
+            output.push(MAIN_SEPARATOR);
             p.to_path_buf()
         },
         Err(_) => path,
@@ -61,11 +62,11 @@ fn compact_path(path: PathBuf) -> String {
     let mut first: bool = false;
     for frag in components.iter() {
         if first {
-            output.push_str(&"/");
+            output.push(MAIN_SEPARATOR);
         }
         first = true;
 
-        if frag == &"/" {
+        if frag.chars().nth(0) == Some(MAIN_SEPARATOR) {
             continue;
         }
 
