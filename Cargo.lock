@@ -121,6 +121,7 @@ name = "path-compactor"
 version = "0.1.0"
 dependencies = [
  "dirs",
+ "lazy_static",
  "regex",
 ]
 
