@@ -7,34 +7,31 @@ extern crate dirs;
 #[macro_use]
 extern crate lazy_static;
 
-fn main() -> std::io::Result<()> {
-    let path = get_cwd()?;
+fn main() {
+    let path = get_cwd().unwrap();
 
     print!("{}", compact_path(path));
-    Ok(())
 }
 
 /// Gets the current working directory, or parsed from first CLI argument if
 /// provided.
 fn get_cwd() -> std::io::Result<PathBuf> {
     let argv: Vec<String> = env::args().collect();
-    let path = match argv.get(1) {
+    match argv.get(1) {
         Some(p) => {
             let pb = PathBuf::from(p);
             pb.canonicalize().or(Ok(pb))
         },
         _ => env::current_dir(),
-    };
-    path
+    }
 }
 
 /// Gets the home directory.
 fn get_home() -> PathBuf {
-    let home = match dirs::home_dir() {
+    match dirs::home_dir() {
         Some(p) => p,
         None => Path::new("").to_path_buf(),
-    };
-    home
+    }
 }
 
 /// Compacts a provided PathBuf and returns it as a string
