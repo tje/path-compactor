@@ -41,7 +41,7 @@ fn compact_path(path: PathBuf) -> String {
     let mut output = String::new();
 
     // If the path includes the home directory, strip it out and print "~"
-    let np = match path.strip_prefix(format!("{}", home.display())) {
+    let np = match path.strip_prefix(home) {
         Ok(p) => {
             output.push_str(&"~");
             output.push(MAIN_SEPARATOR);
