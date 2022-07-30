@@ -60,13 +60,11 @@ fn compact_path(path: PathBuf) -> String {
 
     // Iterate over each fragment in the components and push it into output,
     // prefixed with dir separator
-    let mut first: bool = false;
-    let mut it = components.iter();
-    while let Some(frag) = it.next() {
-        if first {
+    let mut it = components.iter().enumerate();
+    while let Some((idx, frag)) = it.next() {
+        if idx > 0 {
             output.push(MAIN_SEPARATOR);
         }
-        first = true;
         output.push_str(&frag);
     }
     output
