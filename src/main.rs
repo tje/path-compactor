@@ -43,7 +43,7 @@ fn compact_path(path: PathBuf) -> String {
     // If the path includes the home directory, strip it out and print "~"
     let np = match path.strip_prefix(home) {
         Ok(p) => {
-            output.push_str(&"~");
+            output.push('~');
             output.push(MAIN_SEPARATOR);
             p.to_path_buf()
         },
@@ -54,8 +54,7 @@ fn compact_path(path: PathBuf) -> String {
     // each fragment
     let components: Vec<String> = np
         .components()
-        .map(|c| c.as_os_str().to_str().unwrap())
-        .map(|c| compact_fragment(c))
+        .map(|c| compact_fragment(c.as_os_str().to_str().unwrap()))
         .collect();
 
     // Iterate over each fragment in the components and push it into output,
