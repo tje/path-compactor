@@ -38,35 +38,19 @@ fn get_home() -> PathBuf {
 fn compact_path(path: PathBuf) -> String {
     let home = get_home();
 
-    let mut output = String::new();
-
-    // If the path includes the home directory, strip it out and print "~"
-    let np = match path.strip_prefix(home) {
-        Ok(p) => {
-            output.push('~');
-            output.push(MAIN_SEPARATOR);
-            p.to_path_buf()
-        },
+    // If the path includes the home directory, replace it with "~"
+    let path = match path.strip_prefix(home) {
+        Ok(p) => Path::new("~").join(p),
         Err(_) => path,
     };
 
-    // Split the path by dir separator into a collection of strings and compact
-    // each fragment
-    let components: Vec<String> = np
+    // Split the path into components, compact each fragment, and return the
+    // joined path
+    path
         .components()
         .map(|c| compact_fragment(c.as_os_str().to_str().unwrap()))
-        .collect();
-
-    // Iterate over each fragment in the components and push it into output,
-    // prefixed with dir separator
-    let mut it = components.iter().enumerate();
-    while let Some((idx, frag)) = it.next() {
-        if idx > 0 {
-            output.push(MAIN_SEPARATOR);
-        }
-        output.push_str(&frag);
-    }
-    output
+        .collect::<Vec<String>>()
+        .join(&MAIN_SEPARATOR.to_string())
 }
 
 /// Compacts a single path fragment
