@@ -30,7 +30,7 @@ Or PowerShell:
 function Prompt {
   $P = (~/bin/pc.exe)
   Write-Host "$(Split-Path $P)\" -ForegroundColor darkgray -NoNewline
-  Write-Host (Split-Path $P -Leaf) -NoNewline
+  Write-Host (Split-Path $PWD -Leaf) -NoNewline
   Write-Host " PS>" -ForegroundColor cyan -NoNewline
   return " "
 }
